@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environments
+anaconda*/
+.env/
+.conda/
+.ipynb_checkpoints/
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Large data folders
+data/
+datasets/
+outputs/
+models/
+
+# Generated files
+*.pth
+*.pt
+*.h5
+*.onnx
+*.png
+*.jpg
+*.jpeg
