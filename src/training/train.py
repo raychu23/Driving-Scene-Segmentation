@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 
 from src.pipeline.pair_paths import get_pairs
 from src.pipeline.dataset import BDD100KSegDataset
-from src.training.models import get_deeplab, get_fastscnn, get_bisenetv2, get_baselinecnn
+from src.training.models import get_deeplab, get_fastscnn, get_bisenetv2, get_baselinecnn, get_mobilenet 
 
 
 # Pick model by name
@@ -18,12 +18,15 @@ def build_model(name, num_classes=19):
         return get_bisenetv2(num_classes)
     elif name == "baselinecnn":
         return get_baselinecnn(num_classes)
+    elif name == "mobilenet":
+        return get_mobilenet(num_classes)
+    # elif name == "icnet":
+    #     return get_icnet(num_classes)
     else:
         raise ValueError("Unknown model name")
 
 
-
-def main(model_name="deeplab"):
+def main(model_name):
     # device = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     print("Using device:", device)
@@ -83,7 +86,17 @@ def main(model_name="deeplab"):
     torch.save(model.state_dict(), f"{model_name}_bdd100k.pth")
     print(f"Saved: {model_name}_bdd100k.pth")
 
-
+#   python -m src.training.train deeplab
+#   python -m src.training.train fastscnn
+#   python -m src.training.train bisenetv2
+#   python -m src.training.train baselinecnn
+#   python -m src.training.train mobilenet
+#   python -m src.training.train icnet
 if __name__ == "__main__":
-    # Choose from: deeplab, fastscnn, bisenetv2
-    main("deeplab")
+    import sys
+    if len(sys.argv) > 1:
+        model_name = sys.argv[1]
+    else:
+        model_name = "deeplab"   # default
+    
+    main(model_name)

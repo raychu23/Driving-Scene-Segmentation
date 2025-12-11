@@ -13,7 +13,7 @@ def get_deeplab(num_classes=19):
 
 
 # ---------------------------------------------------------
-# Fast-SCNN (lightweight real-time segmentation)
+# Fast-SCNN (lightweight real-time segmentation) simplified implementation 
 # ---------------------------------------------------------
 class FastSCNN(nn.Module):
     # Extremely compact real-time semantic segmentation model.
@@ -66,7 +66,7 @@ def get_fastscnn(num_classes=19):
 
 
 # ---------------------------------------------------------
-# BiSeNetV2 (lightweight + good accuracy)
+# BiSeNetV2 (lightweight + good accuracy) simplified implementation
 # ---------------------------------------------------------
 class BiSeNetV2(nn.Module):
     def __init__(self, num_classes=19):
@@ -162,3 +162,58 @@ class BaselineCNN(nn.Module):
 
 def get_baselinecnn(num_classes=19):
     return BaselineCNN(num_classes=num_classes)
+
+# -----------------------------
+# MobileNetV3-LRASPP imported full
+# -----------------------------
+from torchvision.models.segmentation import lraspp_mobilenet_v3_large
+
+def get_mobilenet(num_classes=19):
+    """Official lightweight segmentation model from TorchVision."""
+    model = lraspp_mobilenet_v3_large(weights="DEFAULT")
+
+    # Replace classifier layers to match our number of classes
+    model.classifier.low_classifier = nn.Conv2d(40, num_classes, 1)
+    model.classifier.high_classifier = nn.Conv2d(128, num_classes, 1)
+
+    return model
+
+# -----------------------------
+# 2. ICNet (via MMseg)
+# -----------------------------
+# from mmseg.apis import init_model
+
+# def get_icnet(num_classes=19, device="cpu"):
+#     """
+#     Load ICNet from MMsegmentation with pretrained weights.
+#     Wrapped so it returns {'out': tensor}.
+#     """
+#     # Pre-trained config from MMsegmentation model zoo
+#     config = "icnet_r18-d8_832x832_80k_cityscapes.py"
+#     checkpoint = "icnet_r18-d8_832x832_cityscapes_20210925_094422.pth"
+
+#     # Initialize model
+#     mmseg_model = init_model(config, checkpoint, device=device)
+
+#     # Wrap model so forward() returns {"out": pred_tensor}
+#     class ICNetWrapper(nn.Module):
+#         def __init__(self, model):
+#             super().__init__()
+#             self.model = model
+
+#         def forward(self, x):
+#             preds = self.model.encode_decode(
+#                 x,
+#                 img_metas=[{
+#                     "ori_shape": x.shape[2:], 
+#                     "img_shape": x.shape[2:], 
+#                     "pad_shape": x.shape[2:],
+#                     "scale_factor": 1.0,
+#                     "flip": False
+#                 }]
+#             )   
+#             # preds: (N, H, W)
+#             preds = torch.from_numpy(preds).long().to(x.device)
+#             return {"out": preds}
+
+#     return ICNetWrapper(mmseg_model)
