@@ -59,7 +59,14 @@ def evaluate(model_name, weight_file):
 # python -m src.evaluation.eval baselinecnn baselinecnn_bdd100k.pth
 # python -m src.evaluation.eval mobilenet mobilenet_bdd100k.pth
 if __name__ == "__main__":
-    evaluate("deeplab", "deeplab_bdd100k.pth")
+    # evaluate("deeplab", "deeplab_bdd100k.pth")
+    import sys
+    if len(sys.argv) > 1:
+        model_name = sys.argv[1]
+    else:
+        model_name = "baselinecnn"   # default
+
+    evaluate(model_name, model_name + "_bdd100k.pth")
 
 # Convert any model to ONNX
 # python -m src.export.to_onnx deeplab deeplab.onnx

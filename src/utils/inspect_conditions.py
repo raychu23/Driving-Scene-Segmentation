@@ -20,6 +20,7 @@ def inspect_conditions(json_path):
     print("Weather distribution:", weather)
     print("Scene distribution:", scenes)
 
+# python -m src.utils.inspect_conditions data/bdd100k-seg/weather/bdd100k_labels_images_val.json
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python -m src.utils.inspect_conditions <json_file>")
