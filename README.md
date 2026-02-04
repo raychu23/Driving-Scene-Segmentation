@@ -83,7 +83,7 @@ A PyTorch `Dataset` + `DataLoader` handles:
   - Inference latency / FPS
 - Modular training and evaluation pipeline
 
-## ⚙️ Installation
+## Installation
 
 ### Prerequisites
 
@@ -102,7 +102,6 @@ $ git clone https://github.com/your-username/road-segmentation-adverse-weather.g
 $ cd road-segmentation-adverse-weather
 
 ### Install Dependencies
-
 $ pip install -r requirements.txt
 
 ---
